@@ -10,15 +10,20 @@
 
 #include <iostream>
 #include "Student.h"
-#include "Module.h"
+#include "Lecturer.h"
 
 using namespace std;
 
 int main() {
 
-	Student stu1("Jeni Watt", "B004568656", "BSc Computing", 1);
+	Student stu1("Jeni Watt", "B004568656", "BSc Computing", 1, "abc@123.com");
 	Student stu2("Frank Lyons");
 	Student stu3{};
+
+	Lecturer lec1();
+	Lecturer lec2("Shane Wilson");
+	Lecturer lec3("ABC", "BSc Computer Science", "E006443532", "123@abc.com");
+
 
 	//Overload the input operator
 	//cin >> stu3;
@@ -49,7 +54,7 @@ int main() {
 
 	stu3.SetName("Paul Doherty");
 	stu3.SetCourse("BSc Geology");
-	stu3.SetRegistrationID("B004556565");
+	stu3.SetIDNum("B004556565");
 	stu3.SetYearofStudy(3);
 
 	return 0;

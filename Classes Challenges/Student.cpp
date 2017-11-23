@@ -27,19 +27,18 @@ Student::Student() {
 	numberofStudents_++;
 }
 
-Student::Student(std::string name) {
-	name_ = name;
-	std::cout << "The first custom Student class constructor was called to create " << name_ << std::endl;
+Student::Student(std::string name) : Person(name){
+	std::cout << "The first custom Student class constructor was called to create " << name << std::endl;
 	numberofStudents_++;
 }
 
 //This constructor creates and initialises it by copying the data from each variable
 //into the specified data member. We use an initializer list but we could also initialize each
 //variable by using assignment statements in the main body of the function
-Student::Student(std::string name, std::string registration, std::string course, int yearofStudy) : name_{ name }, registrstionID_{ registration }, course_{ course},
+Student::Student(std::string name, std::string idNum, std::string course, int yearofStudy, std::string email) : Person(name, email, idNum), course_{ course },
 	yearofStudy_{ yearofStudy}
 {
-	std::cout << "The second custom Student class constructor was called to create " << name_ << std::endl;
+	std::cout << "The second custom Student class constructor was called to create " << name << std::endl;
 	numberofStudents_++;
 
 	//we could assign the values of the parameters to the data members like this
@@ -48,8 +47,8 @@ Student::Student(std::string name, std::string registration, std::string course,
 
 
 Student::~Student() {
-	if (name_.size() > 0) {
-		std::cout << "Destructor of the Student class called on " << name_ << std::endl;
+	if (GetName().size() > 0) {
+		std::cout << "Destructor of the Student class called on " << GetName() << std::endl;
 	}
 	else {
 		std::cout << "Destructor of the Student  class called on empty student" << std::endl;
@@ -61,29 +60,13 @@ Student::~Student() {
 //Overloaded equality operator 
 bool Student::operator==(const Student& right) const {
 	bool same{ true };
-	if ((name_ != right.GetName()) || (course_ != right.GetCourse())) {
+	if ((GetName() != right.GetName()) || (course_ != right.GetCourse())) {
 		return false;
 	}
 	return same;
 }
 
 //Getters and setters
-void Student::SetName(std::string name) {
-	name_ = name;
-}
-//Make getters const so that it tells the compiler to complain if we accidentlly 
-//try to change a data member 
-std::string Student::GetName() const {
-	return name_;
-}
-
-void Student::SetRegistrationID(std::string registrstionID) {
-	registrstionID_ = registrstionID;
-}
-std::string Student::GetRegistrationID() const {
-	return registrstionID_;
-}
-
 void Student::SetCourse(std::string course) {
 	course_ = course;
 }
@@ -96,13 +79,6 @@ void Student::SetYearofStudy(int year) {
 }
 int Student::GetYearofStudy() const {
 	return yearofStudy_;
-}
-
-void Student::ToString() const {
-	std::string output = name_ + " " + registrstionID_ + " " + course_ + " " + std::to_string(yearofStudy_) + " " + "\n";
-		//+ std::to_string(moduleOneMark_) + " " + std::to_string(moduleTwoMark_) + " " + std::to_string(moduleThreeMark_) + "\n";
-	//+yearofStudy_ + " " + moduleOneMark_ + " "	+ moduleTwoMark_ + " " + moduleThreeMark_;
-	std::cout << output;
 }
 
 std::string Student::CalculateClassification() const {
@@ -175,7 +151,7 @@ int Student::GetNumberModules() {
 }
 
 std::ostream& operator<<(std::ostream& output, const Student& student) {
-	output << "Name: " << student.name_ << " Registration: " << student.registrstionID_ << " Course: " << student.course_ << " Year of study: " << student.yearofStudy_ << std::endl << std::endl;
+	output << "Name: " << student.GetName() << " Registration: " << student.GetID() << " Course: " << student.course_ << " Year of study: " << student.GetYearofStudy() << std::endl << std::endl;
 
 	return output;
 }
@@ -185,12 +161,12 @@ std::istream& operator>>(std::istream& input, Student& student) {
 	std::cout << "Please enter the student first name: ";
 	std::string temp;
 	input >> temp;
-	student.name_ += temp;
+	student.GetName() += temp;
 	std::cout << "Please enter the student second name: ";
 	input >> temp;
-	student.name_ += " " + temp;
+	student.GetName() += " " + temp;
 	std::cout << std::endl << "Please enter the student ID: ";
-	input >> student.registrstionID_;
+	input >> student.GetID();
 	std::cout << std::endl << "Please enter the student course: ";
 	input >> student.course_;
 	std::cout << std::endl << "Please enter the student year of study: ";
@@ -199,3 +175,10 @@ std::istream& operator>>(std::istream& input, Student& student) {
 	return input;
 }
 
+std::string Student::ToString() {
+	std::ostringstream output;
+	std::cout << "Dervived student details " << std::endl;
+	output << Person::ToString() << GetCourse() << ", " << GetYearofStudy() << std::endl;
+
+	return output.str();
+}

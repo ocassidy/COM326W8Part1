@@ -9,13 +9,10 @@
 */
 
 #pragma once
-
-#include <iostream>
-#include <string>
-#include <vector>
 #include "Module.h"
+#include "Person.h"
 
-class Student {
+class Student : public Person {
 
 	//Number of students
 	static int numberofStudents_;
@@ -23,8 +20,6 @@ class Student {
 	//Priviate data members - we make them private so we can protect the data
 	//This enforces encapsulation. We control access through the public member functions
 private:
-	std::string name_;
-	std::string registrstionID_;
 	std::string course_;
 	int yearofStudy_;
 
@@ -35,8 +30,6 @@ private:
 	//int moduleThreeMark_;
 	float CalculateAverage() const;
 
-	
-
 public:
 	//Public member functions
 
@@ -45,7 +38,7 @@ public:
 	Student();
 
 	//Custom constructor. We use this to initialise the object with data we pass in
-	Student(std::string name, std::string registration, std::string course, int yearofStudy);
+	Student(std::string name, std::string idNum, std::string course, int yearofStudy, std::string email);
 
 	Student(std::string name);
 
@@ -61,11 +54,6 @@ public:
 	bool operator==(const Student&) const;
 
 	//Getters and setters for each member variable
-	void SetName(std::string name);
-	std::string GetName() const;
-
-	void SetRegistrationID(std::string registrstionID);
-	std::string GetRegistrationID() const;
 
 	void SetCourse(std::string course);
 	std::string GetCourse() const;
@@ -79,7 +67,7 @@ public:
 	void UpdateModule(std::string moduleTitle, std::string moduleCode, int moduleCreditPoints, int moduleMark);
 	int GetNumberModules();
 
-	void ToString() const;
+	virtual std::string ToString() override;
 
 	std::string Student::CalculateClassification() const;
 	//std::string Student::CalculateClassification();
